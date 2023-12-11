@@ -1,17 +1,14 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { CoffeesModule } from './coffees/coffees.module';
-import { BooksModule } from './books/books.module';
+import { join } from 'path';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./**/*.graphql'],
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
-    CoffeesModule,
-    BooksModule,
   ],
   controllers: [],
   providers: [],

@@ -1,0 +1,30 @@
+type Coffee {
+  id: ID!
+  name: String!
+  brand: String!
+  flavour: [String!]!
+}
+
+input CreateCoffeeInput {
+  name: String!
+  brand: String!
+  flavour: [String!]!
+}
+
+input UpdateCoffeeInput {
+  id: Int!
+  name: String
+  brand: String
+  flavour: [String!]
+}
+
+type Query {
+  coffees: [Coffee!]!
+  coffee(id: ID!): Coffee
+}
+
+type Mutation {
+  createCoffee(createCoffeeInput: CreateCoffeeInput!): Coffee!
+  updateCoffee(updateCoffeeInput: UpdateCoffeeInput!): Coffee!
+  removeCoffee(id: Int!): Coffee
+}

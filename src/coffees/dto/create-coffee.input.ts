@@ -1,5 +1,5 @@
 import { InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateCoffeeInput {
@@ -11,5 +11,9 @@ export class CreateCoffeeInput {
   @IsNotEmpty()
   @IsString()
   brand: string;
+
+  @IsArray()
+  @IsNotEmpty({ each: true })
+  @IsString({ each: true })
   flavors: string[];
 }

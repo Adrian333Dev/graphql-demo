@@ -1,5 +1,13 @@
+import { CoffeeType } from '@common/enums';
 import { InputType } from '@nestjs/graphql';
-import { IsArray, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 @InputType()
 export class CreateCoffeeInput {
@@ -16,4 +24,8 @@ export class CreateCoffeeInput {
   @IsNotEmpty({ each: true })
   @IsString({ each: true })
   flavors: string[];
+
+  @IsOptional()
+  @IsEnum(CoffeeType)
+  type?: CoffeeType;
 }

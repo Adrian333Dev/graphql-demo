@@ -2,24 +2,68 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Coffee {
+type Tea implements Drink {
+  name: String!
+}
+
+interface Drink {
+  name: String!
+}
+
+type Flavor {
   id: ID!
   name: String!
+  coffees: [Coffee!]!
+}
+
+type Coffee implements Drink {
+  name: String!
+  id: ID!
   brand: String!
-  flavors: [String!]!
+  createdAt: DateTime
+  type: CoffeeType
+  flavors: [Flavor!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum CoffeeType {
+  ARABICA
+  ROBUSTA
 }
 
 type Query {
+  drinks: DrinksResult!
   coffees: [Coffee!]!
-  coffee(id: ID!): Coffee
+  coffee(id: ID!): Coffee!
 }
 
+union DrinksResult = Coffee | Tea
+
 type Mutation {
-  createCoffee(createCoffeeInput: CreateCoffeeInput!): Coffee
+  createCoffee(createCoffeeInput: CreateCoffeeInput!): Coffee!
+  updateCoffee(id: Int!, updateCoffeeInput: UpdateCoffeeInput!): Coffee!
+  removeCoffee(id: Int!): Coffee!
 }
 
 input CreateCoffeeInput {
   name: String!
   brand: String!
   flavors: [String!]!
+  type: CoffeeType
+}
+
+input UpdateCoffeeInput {
+  name: String
+  brand: String
+  flavors: [String!]
+  type: CoffeeType
+  id: Int!
+}
+
+type Subscription {
+  coffeeAdded: Coffee!
 }

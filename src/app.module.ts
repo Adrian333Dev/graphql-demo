@@ -4,7 +4,10 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { CoffeesModule } from './coffees/coffees.module';
+import { Tea } from '@teas/entities';
+import { CoffeesModule } from './coffees';
+import { PubSubModule } from './pub-sub';
+import { DrinksResolver } from './drinks';
 
 @Module({
   imports: [
@@ -13,7 +16,9 @@ import { CoffeesModule } from './coffees/coffees.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       buildSchemaOptions: {
         numberScalarMode: 'integer',
+        orphanedTypes: [Tea],
       },
+      installSubscriptionHandlers: true,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -24,10 +29,12 @@ import { CoffeesModule } from './coffees/coffees.module';
       database: 'postgres',
       autoLoadEntities: true,
       synchronize: true,
+      logging: ['query'],
     }),
     CoffeesModule,
+    PubSubModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [DrinksResolver],
 })
 export class AppModule {}
